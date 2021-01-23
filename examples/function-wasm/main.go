@@ -55,6 +55,8 @@ func main() {
 	js.Global().Set("getError", js.FuncOf(getError))
 	js.Global().Set("bytes", js.FuncOf(receiveSendBytes))
 
+	js.Global().Get("helloWorld").Invoke()
+
 	res := js.Global().Get("addProxy").Invoke(1, 2)
 	log.Printf("1 + 2 = %d\n", res.Int())
 	<-ch

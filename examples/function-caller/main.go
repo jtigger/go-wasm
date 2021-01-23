@@ -23,8 +23,15 @@ func multiply(b *wasm.Bridge, a int) (int, error) {
 	return a * int(m.(float64)), nil
 }
 
+func helloWorld(b *wasm.Bridge) wasm.Func {
+	return func(args []interface{}) (interface {}, error) {
+		log.Println("Hello, world!")
+		return nil, nil
+	}
+}
+
 func main() {
-	b, err := wasm.BridgeFromFile("test", "./examples/function-wasm/main.wasm", nil)
+	b, err := wasm.BridgeFromFile("test", "./examples/function-wasm/main-new.wasm", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -33,6 +40,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = b.SetFunc("helloWorld", helloWorld(b))
 
 	init := make(chan error)
 	ctx, cancF := context.WithCancel(context.Background())
